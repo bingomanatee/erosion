@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/bingomanatee/erosion",
   "dependencies": {
+    "javascript-state-machine": "^2.3.5",
     "lodash": "^3.10.1"
   },
   "devDependencies": {
