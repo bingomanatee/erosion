@@ -1,0 +1,33 @@
+{
+  "name": "erosion",
+  "version": "1.0.0",
+  "description": "a node tool for modelling erosion taking advantage of multiprocessors",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bingomanatee/erosion.git"
+  },
+  "keywords": [
+    "terrain",
+    "erosion",
+    "virgins"
+  ],
+  "author": "David Edelhart",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bingomanatee/erosion/issues"
+  },
+  "homepage": "https://github.com/bingomanatee/erosion",
+  "dependencies": {
+    "lodash": "^3.10.1"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0"
+  }
+}
