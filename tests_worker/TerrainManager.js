@@ -22,11 +22,10 @@ if (cluster.isWorker){
        mgr.init().
          then(function(){
              mgr.divisions.forEach(function(div){
-                tap.ok(div.worker);
+                tap.ok(div.worker, 'manager assigned worker');
                  mgr.hub.sendToWorkers('die');
                  t.end();
              });
-
-         })
+         });
     });
 }
