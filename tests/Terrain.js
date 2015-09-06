@@ -34,7 +34,7 @@ describe('Terrain', function () {
         });
     });
 
-    describe('#to2darray', function(){
+    describe('#to2darray', function () {
 
         beforeEach(function () {
             var n = 0;
@@ -43,13 +43,13 @@ describe('Terrain', function () {
             });
         });
 
-        it('should return an int array', function(){
+        it('should return an int array', function () {
 
             expect(terrain.to2Darray()).to.eql([
-              [1,2,3,4],
-              [5,6,7,8],
-              [9,10,11,12],
-              [13,14,15,16]
+                [1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 11, 12],
+                [13, 14, 15, 16]
             ]);
         });
     });
@@ -97,7 +97,7 @@ describe('Terrain', function () {
             describe('divide wide terrain in 3', function () {
                 var terrains;
 
-                beforeEach(function(){
+                beforeEach(function () {
                     terrains = terrain.divide(3);
                 });
 
@@ -110,7 +110,7 @@ describe('Terrain', function () {
                 //console.log('terrain 2');
                 //console.log(terrains[2].to2Darray());
 
-                it('should have the proper data for the first slice', function(){
+                it('should have the proper data for the first slice', function () {
                     expect(terrains[0].to2Darray()).to.eql([
                         [1, 2, 3, 4, 5],
                         [11, 12, 13, 14, 15],
@@ -125,7 +125,7 @@ describe('Terrain', function () {
                     expect(terrains[0].jStart).to.eql(0);
                 });
 
-                it('should have the proper data for the second slice', function(){
+                it('should have the proper data for the second slice', function () {
                     expect(terrains[1].to2Darray()).to.eql([
                         [6, 7, 8, 9, 10],
                         [16, 17, 18, 19, 20],
@@ -136,7 +136,7 @@ describe('Terrain', function () {
                     expect(terrains[1].jStart).to.eql(5);
                 });
 
-                it('should have proper data for the third slice', function(){
+                it('should have proper data for the third slice', function () {
                     expect(terrains[2].to2Darray()).to.eql([
                         [46, 47, 48, 49, 50],
                         [56, 57, 58, 59, 60],
@@ -152,8 +152,8 @@ describe('Terrain', function () {
 
                 var terrains = terrain.divide(2);
 
-                   // console.log('terrain 0');
-                   // console.log(terrains[0].to2Darray());
+                // console.log('terrain 0');
+                // console.log(terrains[0].to2Darray());
                 expect(terrains[0].to2Darray()).to.eql([
                       [1, 2, 3, 4, 5],
                       [11, 12, 13, 14, 15],
@@ -221,7 +221,22 @@ describe('Terrain', function () {
 
     });
 
-    describe('#data', function(){
+    describe('#imax/jMax', function () {
+        var terrain;
+        beforeEach(function () {
+            terrain = new Terrain(4, 5, 10, 8, 15);
+        });
+
+        it('should have max', function () {
+            expect(terrain.iMax()).to.eql(11);
+        });
+
+        it('should have jMax', function () {
+            expect(terrain.jMax()).to.eql(19);
+        });
+    });
+
+    describe('#data', function () {
         var terrain2;
 
         beforeEach(function () {
@@ -233,9 +248,68 @@ describe('Terrain', function () {
             terrain2 = Terrain.fromData(terrain.toData());
         });
 
-        it('should copy data perfectly', function(){
+        it('should copy data perfectly', function () {
             expect(terrain2.to2Darray()).to.eql(terrain.to2Darray());
         });
 
+    });
+
+    describe('#neighborCells', function () {
+        var neighbors;
+
+        beforeEach(function(){
+            var n = 0;
+            terrain = new Terrain(4, 4, function (i, j) {
+                return ++n;
+            });
+        });
+
+        describe('should get corner neighbors', function () {
+            var data;
+
+            beforeEach(function () {
+                neighbors = terrain.neighborCells(0, 0);
+                data = neighbors.map(function (n) {
+                    return {i: n.i, j: n.j, height: n.height()};
+                });
+            });
+
+            it('should have the right data', function () {
+                expect(data).to.eql([
+                    {i: -1, j: -1, height: null},
+                    {i: -1, j: 0, height: null},
+                    {i: -1, j: 1, height: null},
+                    {i: 0, j: -1, height: null},
+                    {i: 0, j: 1, height: 2},
+                    {i: 1, j: -1, height: null},
+                    {i: 1, j: 0, height: 5},
+                    {i: 1, j: 1, height: 6}
+                ]);
+            });
+        });
+
+        describe('should get middle neighbors', function () {
+            var data;
+
+            beforeEach(function () {
+                neighbors = terrain.neighborCells(1, 1);
+                data = neighbors.map(function (n) {
+                    return {i: n.i, j: n.j, height: n.height()};
+                });
+            });
+
+            it('should have the right data', function () {
+                expect(data).to.eql([
+                    { i: 0, j: 0, height: 1 },
+                    { i: 0, j: 1, height: 2 },
+                    { i: 0, j: 2, height: 3 },
+                    { i: 1, j: 0, height: 5 },
+                    { i: 1, j: 2, height: 7 },
+                    { i: 2, j: 0, height: 9 },
+                    { i: 2, j: 1, height: 10 },
+                    { i: 2, j: 2, height: 11 }
+                ]);
+            });
+        });
     });
 });

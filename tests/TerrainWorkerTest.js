@@ -3,6 +3,7 @@ var TerrainWorker = require('../lib/TerrainWorker');
 var chai = require('chai');
 var expect = chai.expect;
 var q = require('q');
+var _ = require('lodash');
 var SmartBuffer = require('smart-buffer');
 
 describe('TerrainWorker', function () {
@@ -19,7 +20,9 @@ describe('TerrainWorker', function () {
         });
 
         it('should decode buffer', function () {
-            expect(decode).to.eql([{i: 6, j: 9, value: 55.5, terrain: null, virtual: true}]);
+            expect(decode.map(function (cell) {
+                return _.pick(cell, 'i,j,value'.split(','))
+            })).to.eql([{i: 6, j: 9, value: 55.5}]);
         });
 
     });
