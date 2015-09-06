@@ -29,7 +29,7 @@ if (cluster.isWorker) {
         hub.requestWorker(worker, 'initDivision', div1.toData().toString('hex'), function (er, result) {
             t.similar(result, div1.toJSON(true), 'worker echoes terrain data');
 
-            hub.requestWorker(worker, 'initBounds', {}, function(er, result){
+            hub.requestWorker(worker, 'initBounds', {echo: true}, function(er, result){
                 t.similar(result, BOUNDS_STUB, 'result is bounds stub');
                 hub.requestWorker(worker, 'die', {}, function () {
                     t.end();

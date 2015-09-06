@@ -19,7 +19,7 @@ describe('TerrainWorker', function () {
         });
 
         it('should decode buffer', function () {
-            expect(decode).to.eql([{i: 6, j: 9, height: 55.5}]);
+            expect(decode).to.eql([{i: 6, j: 9, value: 55.5, terrain: null, virtual: true}]);
         });
 
     });
