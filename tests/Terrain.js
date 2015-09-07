@@ -257,7 +257,7 @@ describe('Terrain', function () {
     describe('#neighborCells', function () {
         var neighbors;
 
-        beforeEach(function(){
+        beforeEach(function () {
             var n = 0;
             terrain = new Terrain(4, 4, function (i, j) {
                 return ++n;
@@ -269,12 +269,12 @@ describe('Terrain', function () {
 
             beforeEach(function () {
                 neighbors = terrain.neighborCells(0, 0);
-                data = neighbors.map(function (n) {
-                    return {i: n.i, j: n.j, height: n.height()};
-                });
             });
 
             it('should have the right data', function () {
+                data = neighbors.map(function (n) {
+                    return {i: n.i, j: n.j, height: n.height()};
+                });
                 expect(data).to.eql([
                     {i: -1, j: -1, height: null},
                     {i: -1, j: 0, height: null},
@@ -286,6 +286,32 @@ describe('Terrain', function () {
                     {i: 1, j: 1, height: 6}
                 ]);
             });
+
+            it('should reflect bounds cells in corner', function () {
+
+                terrain.setBounds([
+                    {i: -1, j: -1, value: 100},
+                    {i: -1, j: 0, value: 150},
+                    {i: -1, j: 1, value: 200},
+                    {i: 0, j: -1, value: 250},
+                    {i: 1, j: -1, value: 300}
+                ]);
+                data = neighbors.map(function (n) {
+                    return {i: n.i, j: n.j, height: n.height()};
+                });
+                expect(data).to.eql(
+                  [
+                      {i: -1, j: -1, height: 100},
+                      {i: -1, j: 0, height: 150},
+                      {i: -1, j: 1, height: 200},
+                      {i: 0, j: -1, height: 250},
+                      {i: 0, j: 1, height: 2},
+                      {i: 1, j: -1, height: 300},
+                      {i: 1, j: 0, height: 5},
+                      {i: 1, j: 1, height: 6}
+                  ]
+                );
+            })
         });
 
         describe('should get middle neighbors', function () {
@@ -300,14 +326,14 @@ describe('Terrain', function () {
 
             it('should have the right data', function () {
                 expect(data).to.eql([
-                    { i: 0, j: 0, height: 1 },
-                    { i: 0, j: 1, height: 2 },
-                    { i: 0, j: 2, height: 3 },
-                    { i: 1, j: 0, height: 5 },
-                    { i: 1, j: 2, height: 7 },
-                    { i: 2, j: 0, height: 9 },
-                    { i: 2, j: 1, height: 10 },
-                    { i: 2, j: 2, height: 11 }
+                    {i: 0, j: 0, height: 1},
+                    {i: 0, j: 1, height: 2},
+                    {i: 0, j: 2, height: 3},
+                    {i: 1, j: 0, height: 5},
+                    {i: 1, j: 2, height: 7},
+                    {i: 2, j: 0, height: 9},
+                    {i: 2, j: 1, height: 10},
+                    {i: 2, j: 2, height: 11}
                 ]);
             });
         });
