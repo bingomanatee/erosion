@@ -37,11 +37,12 @@ function _smooth(worker) {
 }
 
 module.exports = function (worker, noBounds) {
+    if (!worker.hub) {
+        noBounds = true;
+    }
     var defer = q.defer();
-console.log('worker.terrain._bounds', util.inspect(worker.terrain._bounds, {depth: 2}), noBounds);
     if ((!worker.terrain._bounds) && (!noBounds)) {
         worker.askBounds().then(function () {
-            console.log('bounds received');
             _smooth(worker);
             defer.resolve(true);
         }, function (err) {

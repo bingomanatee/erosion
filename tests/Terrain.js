@@ -1,6 +1,8 @@
 var Terrain = require('./../lib/Terrain');
 var chai = require('chai');
 var expect = chai.expect;
+var fs = require('fs');
+var path = require('path');
 
 describe('Terrain', function () {
 
@@ -50,6 +52,17 @@ describe('Terrain', function () {
                 [5, 6, 7, 8],
                 [9, 10, 11, 12],
                 [13, 14, 15, 16]
+            ]);
+        });
+
+        it('should return an int array with heads', function () {
+            var table = terrain.to2Darray(true);
+            expect(table).to.eql([
+                ['', 'j:0', 'j:1', 'j:2', 'j:3'],
+                ['i:0', 1, 2, 3, 4],
+                ['i:1', 5, 6, 7, 8],
+                ['i:2', 9, 10, 11, 12],
+                ['i:3', 13, 14, 15, 16]
             ]);
         });
     });
@@ -252,6 +265,30 @@ describe('Terrain', function () {
             expect(terrain2.to2Darray()).to.eql(terrain.to2Darray());
         });
 
+    });
+
+    describe('#dataSummary', function () {
+        it('should produce a table out of data', function () {
+            var n = 0;
+            terrain = new Terrain(10, 10, function (i, j) {
+                return ++n;
+            });
+
+            var summary = terrain.dataSummary(8, {
+                chars: {
+                    'top': '#', 'top-mid': '#', 'top-left': '#', 'top-right': '#'
+                    , 'bottom': '#', 'bottom-mid': '#', 'bottom-left': '#', 'bottom-right': '#'
+                    , 'left': '#', 'left-mid': '#', 'mid': '#', 'mid-mid': '#'
+                    , 'right': '#', 'right-mid': '#', 'middle': '#'
+                }
+            });
+          //  console.log('summary:', "\n", summary);
+            var fpath = path.resolve(__dirname, '../test_scripts/dataSummary.txt');
+          //  fs.writeFileSync(fpath, summary, 'utf8');
+
+            expect(summary)
+              .to.eql(fs.readFileSync(fpath, 'utf8'));
+        });
     });
 
     describe('#neighborCells', function () {
