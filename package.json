@@ -29,6 +29,7 @@
     "clusterphone": "^1.0.1",
     "javascript-state-machine": "^2.3.5",
     "lodash": "^3.10.1",
+    "node-png": "^0.4.3",
     "promise": "^7.0.4",
     "q": "^1.4.1",
     "smart-buffer": "^1.0.3"

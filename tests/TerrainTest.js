@@ -375,4 +375,17 @@ describe('Terrain', function () {
             });
         });
     });
+
+    describe('#toPNG', function(){
+
+        beforeEach(function(){
+            terrain = new Terrain(40, 40, function(i, j){
+                return (i * j);
+            });
+        });
+
+        it('should write a PNG', function(done){
+            terrain.toPng(path.resolve(__dirname, '../test_scripts/pngOut.png'), {min: 0, max: (40 * 40/2)}, done);
+        });
+    })
 });
