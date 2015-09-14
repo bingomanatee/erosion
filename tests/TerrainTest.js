@@ -267,30 +267,6 @@ describe('Terrain', function () {
 
     });
 
-    describe('#dataSummary', function () {
-        it('should produce a table out of data', function () {
-            var n = 0;
-            terrain = new Terrain(10, 10, function (i, j) {
-                return ++n;
-            });
-
-            var summary = terrain.dataSummary(8, {
-                chars: {
-                    'top': '#', 'top-mid': '#', 'top-left': '#', 'top-right': '#'
-                    , 'bottom': '#', 'bottom-mid': '#', 'bottom-left': '#', 'bottom-right': '#'
-                    , 'left': '#', 'left-mid': '#', 'mid': '#', 'mid-mid': '#'
-                    , 'right': '#', 'right-mid': '#', 'middle': '#'
-                }
-            });
-          //  console.log('summary:', "\n", summary);
-            var fpath = path.resolve(__dirname, '../test_scripts/dataSummary.txt');
-          //  fs.writeFileSync(fpath, summary, 'utf8');
-
-            expect(summary)
-              .to.eql(fs.readFileSync(fpath, 'utf8'));
-        });
-    });
-
     describe('#neighborCells', function () {
         var neighbors;
 
