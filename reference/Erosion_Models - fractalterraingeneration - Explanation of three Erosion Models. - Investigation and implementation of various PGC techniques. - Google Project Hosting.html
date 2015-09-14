@@ -1,0 +1,484 @@
+
+ 
+
+
+
+ 
+ 
+ 
+
+
+
+ 
+ 
+ <!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+ 
+ <meta name="ROBOTS" content="NOARCHIVE">
+ 
+ <link rel="icon" type="image/vnd.microsoft.icon" href="https://ssl.gstatic.com/codesite/ph/images/phosting.ico">
+ 
+ 
+ <link rel="canonical" href="https://code.google.com/p/fractalterraingeneration/wiki/Erosion_Models" />
+ 
+ <script type="text/javascript">
+ 
+ 
+ 
+ 
+ var codesite_token = null;
+ 
+ 
+ var CS_env = {"domainName": null, "assetVersionPath": "https://ssl.gstatic.com/codesite/ph/10671232128890609530", "token": null, "projectName": "fractalterraingeneration", "profileUrl": null, "assetHostPath": "https://ssl.gstatic.com/codesite/ph", "loggedInUserEmail": null, "relativeBaseUrl": "", "projectHomeUrl": "/p/fractalterraingeneration"};
+ var _gaq = _gaq || [];
+ _gaq.push(
+ ['siteTracker._setAccount', 'UA-18071-1'],
+ ['siteTracker._trackPageview']);
+ 
+ (function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+ })();
+ 
+ </script>
+ 
+ 
+ <title>Erosion_Models - 
+ fractalterraingeneration -
+ 
+ Explanation of three Erosion Models. - 
+ Investigation and implementation of various PGC techniques. - Google Project Hosting
+ </title>
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/10671232128890609530/css/core.css">
+ 
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/10671232128890609530/css/ph_detail.css" >
+ 
+ 
+ 
+ <link type="application/atom+xml" rel="alternate" href="/feeds/p/fractalterraingeneration/svnchanges/basic?path=/wiki/Erosion_Models.wiki">
+ 
+ 
+<!--[if IE]>
+ <link type="text/css" rel="stylesheet" href="https://ssl.gstatic.com/codesite/ph/10671232128890609530/css/d_ie.css" >
+<![endif]-->
+ <style type="text/css">
+ .menuIcon.off { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -42px }
+ .menuIcon.on { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 -28px }
+ .menuIcon.down { background: no-repeat url(https://ssl.gstatic.com/codesite/ph/images/dropdown_sprite.gif) 0 0; }
+ 
+ 
+ #maincol {
+ padding-top: 0;
+ padding-bottom: 0;
+ }
+
+ 
+ </style>
+</head>
+<body class="t6">
+<script type="text/javascript">
+ window.___gcfg = {lang: 'en'};
+ (function() 
+ {var po = document.createElement("script");
+ po.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";
+ var s = document.getElementsByTagName("script")[0];
+ s.parentNode.insertBefore(po, s);
+ })();
+</script>
+<div class="headbg">
+
+ <div id="gaia">
+ 
+
+ <span>
+ 
+ 
+ <a href="#" id="projects-dropdown" onclick="return false;"><u>My favorites</u> <small>&#9660;</small></a>
+ | <a href="https://www.google.com/accounts/ServiceLogin?service=code&amp;ltmpl=phosting&amp;continue=https%3A%2F%2Fcode.google.com%2Fp%2Ffractalterraingeneration%2Fwiki%2FErosion_Models&amp;followup=https%3A%2F%2Fcode.google.com%2Fp%2Ffractalterraingeneration%2Fwiki%2FErosion_Models" onclick="_CS_click('/gb/ph/signin');"><u>Sign in</u></a>
+ 
+ </span>
+
+ </div>
+
+ <div class="gbh" style="left: 0pt;"></div>
+ <div class="gbh" style="right: 0pt;"></div>
+ 
+ 
+ <div style="height: 1px"></div>
+<!--[if lte IE 7]>
+<div style="text-align:center;">
+Your version of Internet Explorer is not supported. Try a browser that
+contributes to open source, such as <a href="http://www.firefox.com">Firefox</a>,
+<a href="http://www.google.com/chrome">Google Chrome</a>, or
+<a href="http://code.google.com/chrome/chromeframe/">Google Chrome Frame</a>.
+</div>
+<![endif]-->
+
+
+
+ <table style="padding:0px; margin: 0px 0px 10px 0px; width:100%" cellpadding="0" cellspacing="0"
+ itemscope itemtype="http://schema.org/CreativeWork">
+ <tr style="height: 58px;">
+ 
+ 
+ 
+ <td id="plogo">
+ <link itemprop="url" href="/p/fractalterraingeneration">
+ <a href="/p/fractalterraingeneration/">
+ 
+ <img src="https://ssl.gstatic.com/codesite/ph/images/defaultlogo.png" alt="Logo" itemprop="image">
+ 
+ </a>
+ </td>
+ 
+ <td style="padding-left: 0.5em">
+ 
+ <div id="pname">
+ <a href="/p/fractalterraingeneration/"><span itemprop="name">fractalterraingeneration</span></a>
+ </div>
+ 
+ <div id="psum">
+ <a id="project_summary_link"
+ href="/p/fractalterraingeneration/"><span itemprop="description">Investigation and implementation of various PGC techniques.</span></a>
+ 
+ </div>
+ 
+ 
+ </td>
+ <td style="white-space:nowrap;text-align:right; vertical-align:bottom;">
+ 
+ <form action="/hosting/search">
+ <input size="30" name="q" value="" type="text">
+ 
+ <input type="submit" name="projectsearch" value="Search projects" >
+ </form>
+ 
+ </tr>
+ </table>
+
+</div>
+
+ 
+<div id="mt" class="gtb"> 
+ <a href="/p/fractalterraingeneration/" class="tab ">Project&nbsp;Home</a>
+ 
+ 
+ 
+ 
+ <a href="/p/fractalterraingeneration/downloads/list" class="tab ">Downloads</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/fractalterraingeneration/w/list" class="tab active">Wiki</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/fractalterraingeneration/issues/list"
+ class="tab ">Issues</a>
+ 
+ 
+ 
+ 
+ 
+ <a href="/p/fractalterraingeneration/source/checkout"
+ class="tab ">Source</a>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <a href="https://code.google.com/export-to-github/export?project=fractalterraingeneration">
+ <button>Export to GitHub</button>
+ 
+ </a>
+ 
+ 
+ <div class=gtbc></div>
+</div>
+
+ 
+ <div style="font-weight: bold; color: #c00; margin-top: 5px; margin-left: 13px;">
+ READ-ONLY: This project has been <a href='https://code.google.com/archive/p/fractalterraingeneration'>archived</a>. For more information see <a href='https://code.google.com/p/support/wiki/ReadOnlyTransition'>this post</a>.
+ </div>
+ 
+
+<table cellspacing="0" cellpadding="0" width="100%" align="center" border="0" class="st">
+ <tr>
+ 
+ 
+ 
+ <td class="subt">
+ <div class="issueDetail">
+<div class="isf">
+ 
+ <span class="inIssueList"> 
+ <span>Search</span>
+ <form action="/p/fractalterraingeneration/w/list" method="GET" style="display:inline">
+ <select id="can" name="can" >
+ <option disabled="disabled">Search within:</option>
+ 
+ <option value="1" >&nbsp;All wiki pages</option>
+ <option value="3" >&nbsp;Featured pages</option>
+ <option value="2" selected="selected">&nbsp;Current pages</option>
+ 
+ 
+ <option value="4" >&nbsp;Deprecated pages</option>
+ 
+ </select>
+ <span>for</span>
+ <span id="qq"><input type="text" size="38" id="searchq" name="q" value=""
+ autocomplete="off" ></span>
+ 
+ 
+ 
+ <input type="submit" value="Search" >
+ </form>
+ </span>
+
+ 
+ 
+ 
+
+</div>
+</div>
+
+ </td>
+ 
+ 
+ 
+ 
+ 
+ 
+ <td align="right" valign="top" class="bevel-right"></td>
+ </tr>
+</table>
+
+
+<script type="text/javascript">
+ var cancelBubble = false;
+ function _go(url) { document.location = url; }
+</script>
+<div id="maincol"
+ 
+>
+
+ 
+
+
+
+
+
+
+
+ <style type="text/css">
+ .delcom { background: #e8e8e8 }
+ .commentcontent {
+ margin: 2em;
+ padding: 0px 10px;
+ width: 66em;
+ }
+ .artifactcomment {
+ border-top: 3px solid #c3d9ff;
+ }
+ #commentform {
+ border-top: 3px solid #c3d9ff;
+ }
+ </style>
+
+<div id="wikipage">
+<table>
+ <tr>
+ 
+ 
+ <td style="vertical-align:top; padding-left:5px">
+ 
+ <div id="wikiheader">
+ 
+ <span style="font-size:120%;font-weight:bold">Erosion_Models</span>
+ &nbsp;
+ <div> 
+ 
+ <i>Explanation of three Erosion Models.</i>
+ 
+ 
+ 
+ <div id="wikiauthor" style="float:right">
+ Updated <span title="Sun Nov  7 12:17:53 2010">
+ Nov 7, 2010</span>
+ 
+ by 
+
+ <a class="userlink"
+ href="/u/111265140617692586711/">zooms...@hotmail.com</a
+>
+ 
+ </div>
+ </div>
+ </div>
+ 
+ <div id="wikicontent">
+ <div class="vt" id="wikimaincol">
+ <h1><a name="Introduction"></a>Introduction<a href="#Introduction" class="section_anchor"></a></h1><p>Erosion Modeling is taking a heightmap and simulating erosion to alter it. Often this is used in video games to make the map more playable. Games generally require large relatively flat areas, but still want steep cliffs for aesthetic value. </p><p>I implemented three different techniques, as described in <a href="http://oddlabs.com/download/terrain_generation.pdf" rel="nofollow">this paper</a>. The three are <strong>Thermal Erosion</strong>, <strong>Hydraulic Erosion</strong>, and <strong>Improved Erosion</strong>. For reference, all the images below used this as the base image to which specific erosion algorithms were applied: </p><p><img src="http://gimli.morningside.edu/~tra001/Algorithms/Erosion/baseimage.png" /> </p><h1><a name="Contents"></a>Contents<a href="#Contents" class="section_anchor"></a></h1><p><ul><li><a href="#Introduction">Introduction</a></li><li><a href="#Contents">Contents</a></li><li><a href="#Algorithms">Algorithms</a></li><ul><li><a href="#Thermal_Erosion">Thermal Erosion</a></li><ul><li><a href="#Comparison">Comparison</a></li><ul><li><a href="#Pros">Pros</a></li><li><a href="#Cons">Cons</a></li></ul></ul><li><a href="#Hydraulic_Erosion">Hydraulic Erosion</a></li><ul><li><a href="#Comparison">Comparison</a></li><ul><li><a href="#Pros">Pros</a></li><li><a href="#Cons">Cons</a></li></ul><li><a href="#Ideas">Ideas</a></li></ul><li><a href="#Improved_Erosion">Improved Erosion</a></li><ul><li><a href="#Comparison">Comparison</a></li><ul><li><a href="#Pros">Pros</a></li><li><a href="#Cons">Cons</a></li></ul></ul></ul><li><a href="#Overall_Ideas">Overall Ideas</a></li><li><a href="#Conclusions">Conclusions</a></li></ul> </p><h1><a name="Algorithms"></a>Algorithms<a href="#Algorithms" class="section_anchor"></a></h1><h2><a name="Thermal_Erosion"></a>Thermal Erosion<a href="#Thermal_Erosion" class="section_anchor"></a></h2><p><strong>Thermal Erosion</strong> represents gravity collapsing cliffs. The idea is relatively simple: The slope of a point is the difference in height between that point and its tallest/shortest neighbor. For each point if the slope is greater than the angle <i>T</i>, called the talus angle, then gravity wins and soil is moved until the slope is less than <i>T</i>. </p><p>This is a relatively straight-forward algorithm, but there are a few different ways to handle some issues. For instance, when altering the terrain, changes can be immediately applied or a difference map can be used that applies all changes at once. In my implementation I immediately applied the changes. </p><p>The method for checking neighbors can be changed as well. In 2D a point has 8 neighbors, called the Moore Neighborhood. However, only checking four corners (called the Von Neumann Neighborhood) yields roughly the same results while greatly improving speed. The Von Neumann neighborhood uses the four neighbors that make a cross shape, however I used a rotated Von Neumann neighborhood like so: </p><p><img src="http://gimli.morningside.edu/~tra001/Algorithms/Erosion/erosion2.png" /> </p><p>Although the code can be easily changed (two operations) to use a Moore neighborhood instead. </p><p>The important variable here is the talus angle, <i>T</i>. I set mine to 4/<tt>width_of_the_map</tt>.  </p><p>Thermal Erosion after 4 iterations: </p><p><img src="http://gimli.morningside.edu/~tra001/Algorithms/Erosion/thermal4.png" /> </p><h3><a name="Comparison"></a>Comparison<a href="#Comparison" class="section_anchor"></a></h3><h4><a name="Pros"></a>Pros<a href="#Pros" class="section_anchor"></a></h4><ul><li>Each iteration is very fast </li><li>Needs very few iterations </li><li>Easy to understand and implement </li><li>Creates flat areas well </li></ul><h4><a name="Cons"></a>Cons<a href="#Cons" class="section_anchor"></a></h4><ul><li>Doesn&#x27;t maintain cliffs at all </li><li>Flat areas are often exactly the <i>T</i> angle </li><li>Not great quality </li></ul><h2><a name="Hydraulic_Erosion"></a>Hydraulic Erosion<a href="#Hydraulic_Erosion" class="section_anchor"></a></h2><p><strong>Hydraulic Erosion</strong> models rainwater picking up sediment from uphill and depositing it downhill. This ends up being considerably more complex than <strong>Thermal Erosion</strong>, but can be roughly broken into four steps: </p><ol><li>Rainfall (new water) </li><li>Erosion (picking up sediment) </li><li>Water Movement (downhill usually) </li><li>Evaporation / Deposition (depositing the sediment) </li></ol><p>A few coefficients must be defined: <ul><li><tt>rain_amount</tt> : how much rain is deposited on each cell each iteration </li><li><tt>solubility</tt> : how much soil is eroded into sediment each iteration </li><li><tt>evaporation</tt> : what percentage of water evaporates each iteration </li><li><tt>capacity</tt> : how much sediment a given unit of water can hold </li></ul></p><p>This is usually done over many iterations. To keep track of everything, a few secondary maps are used: a <strong>water map</strong>, a <strong>sediment map</strong>, and a <strong>difference map</strong>. The <strong>difference map</strong> is the same as in <strong>Thermal Erosion</strong>: changes for an iteration are recorded to it then applied all at once after each iteration. In my code I again did not use a <strong>difference map</strong> and instead apply changes immediately. </p><p><strong>1. Rainfall.</strong> This is a very easy step. For each cell (pixel, point, etc.) add a small amount (<tt>rain_amount</tt>) to the <strong>water map</strong>. While it is perfectly possible to use noise to make nicely randomized rain, after a few iterations it makes no difference. We aren&#x27;t actually simulating a rain storm, we&#x27;re simulating years of continued erosion. </p><p><strong>2. Erosion.</strong> This step is also pretty easy. For each cell subtract a small amount of soil (<tt>solubility</tt>) and put it in the <strong>sediment map</strong>. This step is nearly as easy as step 1. </p><p><strong>3. Movement.</strong> This is the difficult step. Every cell now has some water on it (some may have more from previous iterations). Water uphill must move to the lowest neighbor downhill, and water must pool and level out when possible. So for any given cell there are a few options: </p><p><img src="http://gimli.morningside.edu/~tra001/Algorithms/Erosion/erosion1.png" /> </p><p>Case 1: The height of the water from the cell + the water and land from the lowest neighbor still does not reach the height of the land in the cell. In this case, all water is moved from the cell to the lowest neighbor. </p><p>Case 2: If all water were transfered the water level would be above the land level of the cell, so it can&#x27;t all be moved. Instead the two water levels must be evened out, subtracting 1/2 the difference from the cell&#x27;s water and adding 1/2 the difference to the neighbor&#x27;s water. </p><p>Case 3: The cell has no neighbors lower than it, so no water needs to be moved at all. </p><p>Every cell will fall into one of these three categories. For maximum correctness water should be distributed to all lower neighbors, but using only the lowest neighbor greatly increases speed and barely affects quality.  </p><p><strong>4. Evaporation.</strong> This step is pretty easy. For every cell evaporate a given percentage (<tt>evaporation</tt>) of the water from the <strong>water map</strong>. Now that the water has gone down, the sediment in the water usually exceeds <tt>capacity</tt>. Sediment is subtracted from the <strong>sediment map</strong> and added to the heightmap until it no longer exceeds <tt>capacity</tt>. One interesting optimization is setting <tt>solubility = capacity</tt>. That means any given unit of water will contain the same amount of sediment, so the <strong>sediment map</strong> can be excluded. This cuts memory requirements by 1/3 and makes programming simpler. </p><p>These four steps are performed on every cell (pixel, point, etc.) every iteration. Hydraulic erosion usually takes 50-100 iterations to get the desired quality. This is hydraulic erosion after 500 iterations: </p><p><img src="http://gimli.morningside.edu/~tra001/Algorithms/Erosion/hydro500.png" /> </p><h3><a name="Comparison"></a>Comparison<a href="#Comparison" class="section_anchor"></a></h3><h4><a name="Pros"></a>Pros<a href="#Pros" class="section_anchor"></a></h4><ul><li>Very good quality </li><li>Approximates reality pretty well </li></ul><h4><a name="Cons"></a>Cons<a href="#Cons" class="section_anchor"></a></h4><ul><li>Much slower than Thermal Erosion </li><li>Requires many more iterations than Thermal Erosion </li></ul><h3><a name="Ideas"></a>Ideas<a href="#Ideas" class="section_anchor"></a></h3><p>Rain doesn&#x27;t have to come down evenly, or be rain at all. If consistent noise is used then certain areas will get very little rain (and look more jagged) and some areas will get more rain (and look smoother). This wouldn&#x27;t look very good on a map of a small area, but for planet-sized maps it would add some interesting variance (although ocean beds would have to be taken into account). It would also be possible to &#x27;plant&#x27; a spring at the top of a mountain which would spew extra water each iteration, eventually cutting a river-bed into the landscape. Neither of these ideas would be very difficult to implement, so I will have to come back to them soon. </p><h2><a name="Improved_Erosion"></a>Improved Erosion<a href="#Improved_Erosion" class="section_anchor"></a></h2><p><strong>Improved Erosion</strong> is a relatively minor adjustment to <strong>Thermal Erosion</strong> to create the desired outputs. <strong>Thermal Erosion</strong> flattened cliffs but did nothing to relatively flat areas. We want the opposite of this, to keep cliffs but continue flattening areas that were slightly jagged. </p><p>The adjustment is simple: in <strong>Thermal Erosion</strong> soil moves down if the slope is greater than the talus angle <i>T</i>. However, if this operation is flipped to only move soil if the slope is &lt;= <i>T</i>, then cliffs are left alone and relatively flat areas continue to flatten. This creates plateaus, which are very useful for games. </p><p>One pitfall here is to continue using the same <i>T</i> angle. Using 4/map<tt>_</tt>width seems to completely stop erosion. Values of 12/map<tt>_</tt>width or 16/map<tt>_</tt>width will create the desired erosion. It is also important to determine how many iterations are required. Too many iterations creates flat landscapes with thin squiggles running through it. The squiggles are plateaus eroded until they are only 1 or 2 pixels wide (and so become 100% cliffs) and become immune to the erosion. </p><p>Here is <strong>Improved Erosion</strong> after 50 iterations: </p><p><img src="http://gimli.morningside.edu/~tra001/Algorithms/Erosion/improved50.png" /> </p><h3><a name="Comparison"></a>Comparison<a href="#Comparison" class="section_anchor"></a></h3><h4><a name="Pros"></a>Pros<a href="#Pros" class="section_anchor"></a></h4><ul><li>Much faster than <strong>Hydraulic Erosion</strong> </li><li>Good quality </li><li>Great for games </li><li>Easy to implement </li></ul><h4><a name="Cons"></a>Cons<a href="#Cons" class="section_anchor"></a></h4><ul><li>Good for games, but not necessarily for realism. </li><ul><li>Looks kind of like a watercolor painting. </li></ul><li>Slightly slower than <strong>Thermal Erosion</strong> (takes more iterations). </li><li>Iterations must be determined carefully, or artifacts can arise. </li></ul><h1><a name="Overall_Ideas"></a>Overall Ideas<a href="#Overall_Ideas" class="section_anchor"></a></h1><p>I think the landscapes might look better with a very small amount of noise added back on after erosion is finished, just to give it a texture.  </p><h1><a name="Conclusions"></a>Conclusions<a href="#Conclusions" class="section_anchor"></a></h1><p>Thermal erosion looks pretty awful, so I don&#x27;t think I&#x27;ll ever be using it. Hydraulic Erosion is my favorite, but runs pretty slowly. Improved Erosion is good for games, but doesn&#x27;t really look all that realistic. I will continue using and experimenting with Improved Erosion and especially Hydraulic Erosion. </p><p>I should note that I learned the other algorithms by mashing together information from many different sources. For Erosion Modeling I really only had one primary reference, <a href="http://oddlabs.com/download/terrain_generation.pdf" rel="nofollow">http://oddlabs.com/download/terrain_generation.pdf</a> which definitely deserves mention as it is very well done. </p><p>Click here to see it in action: <a href="http://gimli.morningside.edu/~tra001/Algorithms/Erosion/ImprovedErosion.cgi" rel="nofollow">http://gimli.morningside.edu/~tra001/Algorithms/Erosion/ImprovedErosion.cgi</a> </p>
+ </div>
+ </div>
+ </td><tr>
+</table>
+ </div>
+
+
+ 
+ <div id="wikicommentcol">
+ 
+
+
+ 
+ 
+ 
+ 
+ 
+
+<div class="collapse">
+
+
+ 
+
+
+<div id="commentlist">
+
+ 
+ <div class="artifactcomment"
+ 
+ >
+ 
+ 
+ <span class="author">Comment
+ 
+ by 
+ 
+ 
+
+ 
+ <span class="userlink">lev.gae...@gmail.com</span>,
+ 
+ </span>
+ <span class="date" title="Sat Apr 18 04:43:01 2015">Apr 18, 2015</span>
+ <div>
+<div class="commentcontent">
+<p>This is great and really helpful, thank you! A definite read for anyone trying to implement such a feature;) </p>
+</div>
+ 
+ 
+ </div>
+ </div>
+ 
+
+ 
+ <div class="artifactcomment"
+ 
+ >
+ 
+ 
+ <span class="author">Comment
+ 
+ by 
+ 
+ 
+
+ 
+ <span class="userlink">lev.gae...@gmail.com</span>,
+ 
+ </span>
+ <span class="date" title="Sat Apr 18 04:44:55 2015">Apr 18, 2015</span>
+ <div>
+<div class="commentcontent">
+<p>Btw, what&#x27;s up with the &#x27;Erosion in action&#x27; cgi? For me it&#x27;s quickly generating a heightmap, and then? Seems no algorithm to calculate anything... </p>
+</div>
+ 
+ 
+ </div>
+ </div>
+ 
+
+</div>
+</div>
+
+ 
+
+
+ <script type="text/javascript">
+ function delComment(sequence_num, create_time, delete_mode) {
+ var f = document.forms["delcom"];
+ f.sequence_num.value = sequence_num;
+ f.create_time.value = create_time;
+ f.mode.value = delete_mode;
+ f.submit();
+ return false;
+ }
+ </script>
+
+
+ </div>
+ 
+ 
+ 
+ <form name="delcom" action="../w/delComment.do" method="POST">
+ <input type="hidden" name="sequence_num" value="" >
+ <input type="hidden" name="create_time" value="" >
+ <input type="hidden" name="mode" value="" >
+ <input type="hidden" name="pagename" value="Erosion_Models" >
+ <input type="hidden" name="token" value="" >
+ </form>
+
+
+ <script src="https://ssl.gstatic.com/codesite/ph/10671232128890609530/js/prettify/prettify.js"></script>
+ <script type="text/javascript">
+ prettyPrint();
+ </script>
+
+<script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/10671232128890609530/js/dit_scripts.js"></script>
+
+
+
+  
+ 
+ 
+ <script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/10671232128890609530/js/ph_core.js"></script>
+ 
+ <script type="text/javascript" src="https://ssl.gstatic.com/codesite/ph/10671232128890609530/js/ph_dwiki.js"></script>
+ 
+ 
+ 
+ 
+</div> 
+
+<div id="footer" dir="ltr">
+ <div class="text">
+ <a href="/projecthosting/terms.html">Terms</a> -
+ <a href="http://www.google.com/privacy.html">Privacy</a> -
+ <a href="/p/support/">Project Hosting Help</a>
+ </div>
+</div>
+ <div class="hostedBy" style="margin-top: -20px;">
+ <span style="vertical-align: top;">Powered by <a href="http://code.google.com/projecthosting/">Google Project Hosting</a></span>
+ </div>
+
+ 
+ 
+
+
+ 
+ </body>
+</html>
+
+

@@ -36,22 +36,19 @@ function _smooth(worker) {
     //console.log(worker.terrain.to2Darray());
 }
 
-module.exports = function (worker, noBounds) {
-    if (!worker.hub) {
-        noBounds = true;
-    }
+module.exports = function (worker, data) {
+    var noBounds = (!worker.hub) || data.noBounds;
     var defer = q.defer();
-    if ((!worker.terrain._bounds) && (!noBounds)) {
-        worker.askBounds().then(function () {
-            _smooth(worker);
-            defer.resolve(true);
-        }, function (err) {
-            defer.reject(err);
-        });
-    } else {
-        _smooth(worker);
-        defer.resolve(true);
-    }
 
-    return defer.promise;
+    return new Promise(function(resolve, reject){
+        if ((!worker.terrain._bounds) && (!noBounds)) {
+            worker.askBounds().then(function () {
+                _smooth(worker);
+                resolve(true);
+            },reject);
+        } else {
+            _smooth(worker);
+            resolve(true);
+        }
+    });
 };

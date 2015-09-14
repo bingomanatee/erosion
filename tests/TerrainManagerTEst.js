@@ -21,7 +21,8 @@ describe('TerrainManager', function () {
             });
         };
 
-        var p = mgr.init(2);
+        mgr.divisionCount = 2;
+        var p = mgr.init();
         p.then(function () {
             done();
         });
