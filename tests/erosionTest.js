@@ -12,7 +12,7 @@ describe('erosion', function () {
 
         var cell;
 
-        describe('#dissolve', function () {
+        describe('dissolve', function () {
             var dissolve = require('./../lib/erosion/cell/dissolve');
             var dissolveRate = 0.25;
 
@@ -37,20 +37,23 @@ describe('erosion', function () {
                     dissolve(cell, dissolveRate);
                 });
 
+                it('produces net 2.5 sediment', function () {
+                    expect(cell.totalSed(true)).to.eql(2.5);
+                });
+
                 it('dissolves the cell by a given percent of the present water', function () {
                     expect(cell.height()).to.eql(2.5);
                 });
 
                 it('doesn\'t change the total height', function () {
-                    dissolve(cell, dissolveRate);
-                    expect(cell.totalHeight(true)).to.eql(5);
+                    expect(cell.totalHeight(true)).to.eql(15);
                 });
-            })
+            });
         });
 
-        describe('#evaporate', function () {
+        describe('evaporate', function () {
             var evaporate = require('./../lib/erosion/cell/evaporate');
-            var cell
+            var cell;
 
             beforeEach(function () {
                 cell = new TerrainCell({}, 0, 0, 100);
@@ -74,7 +77,7 @@ describe('erosion', function () {
 
         });
 
-        describe('#flow', function () {
+        describe('flow', function () {
             var flow = require('./../lib/erosion/cell/flow');
             var cell, cell2;
             beforeEach(function () {
@@ -111,16 +114,57 @@ describe('erosion', function () {
                     expect(cell.totalHeight(true)).to.be.closeTo(97.5, 0.0001);
                     expect(cell.totalWater()).to.be.closeTo(5.25, 0.0001);
                     expect(cell.totalSed()).to.be.closeTo(2.25, 0.0001);
-                    //  console.log('cell: ', cell.toString(), 'cell2: ', cell2.toString());
                 });
             });
 
         });
     });
 
+    describe('lowestNeighbor', function () {
+        var terrain;
+        var lowestNeighbor = require('./../lib/erosion/cell/lowestNeighbor');
+        beforeEach(function () {
+            terrain = new Terrain(5, 5, function (i, j) {
+                return 10 - Math.abs(i - 2) - Math.abs(j - 2);
+            });
+            terrain.random = function () {
+                return 1;
+            }
+        });
 
-    describe('#erode', function () {
-        var erode = require('./../lib/erosion/erode');
+        it('should find the lowest neighbor at 1,1', function () {
+            var lowest = lowestNeighbor(terrain.getCell(1, 1));
+            expect(_.pick(lowest, ['i', 'j'])).to.eql({i: 0, j: 0});
+        });
+
+        it('should find the lowest neighbor at 0,1', function () {
+            var lowest = lowestNeighbor(terrain.getCell(1, 1));
+            expect(_.pick(lowest, ['i', 'j'])).to.eql({i: 0, j: 0});
+        });
+
+        it('should find the lowest neighbor at 3,3', function () {
+            var lowest = lowestNeighbor(terrain.getCell(3, 3));
+            expect(_.pick(lowest, ['i', 'j'])).to.eql({i: 4, j: 4});
+        });
+
+        it('should find the first of equals at 3, 2', function () {
+
+            var lowest = lowestNeighbor(terrain.getCell(3, 2));
+            expect(_.pick(lowest, ['i', 'j'])).to.eql({i: 4, j: 1});
+        });
+
+        it('should find the last of equals at 3, 2 with a random function of 0', function () {
+            terrain.random = function () {
+                return 0;
+            };
+            var lowest = lowestNeighbor(terrain.getCell(3, 2));
+            expect(_.pick(lowest, ['i', 'j'])).to.eql({i: 4, j: 3});
+        });
+    });
+
+    describe('erode', function () {
+        var TerrainWorker = require('./../lib/TerrainWorker');
+        var worker;
         var terrain;
         var runParams;
 
@@ -129,22 +173,21 @@ describe('erosion', function () {
             terrain = new Terrain(11, 11, function (i, j, I, J) {
                 return 100 * (i / (I - 1));
             });
+            worker = new TerrainWorker(terrain);
 
             terrain.random = function (cell) {
-                if (cell.i == 4 && cell.j == 4) {
-                    randTrue = !randTrue;
-                    return randTrue ? 1 : 0;
-                } else {
-                    return 0;
-                }
+                randTrue = !randTrue;
+                return randTrue ? 1 : 0;
             };
 
             runParams = {
-                waterFreq: 0.5,
-                waterAmount: 5,
+                script: path.resolve(__dirname, './../lib/erosion/erode'),
+                waterFreq: 0,
+                waterAmount: 0,
                 evapRate: 0.9,
                 maxSaturation: 0.5,
-                sedDissolve: 0.1
+                sedDissolve: 0.1,
+                reps: 10
             }
         });
 
@@ -164,14 +207,23 @@ describe('erosion', function () {
             ]);
         });
 
-        it('should erode only on single cell', function (done) {
-            erode({terrain: terrain}, runParams).then(function () {
-                terrain.erosionReport();
-                done();
-            }, function (err) {
-                console.log('err: ', err);
-                done();
-            });
+        it('should melt a channel', function (done) {
+
+            terrain.getCell(5, 5).water = 100;
+            worker.updateTerrain(runParams)
+              .then(function () {
+                  terrain.erosionReport();
+                  var imgPath = path.resolve(__dirname, '../test_scripts/singleChannel.png');
+                  console.log('image path: ', imgPath);
+                  terrain.toPng(imgPath, {max: 50, min: -20})
+                    .then(function () {
+                        done();
+                    });
+              }, function (err) {
+                  console.log('err: ', err);
+                  console.log(err.getStack());
+                  done();
+              });
         });
     });
 
