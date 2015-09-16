@@ -7,7 +7,7 @@ if (cluster.isMaster) {
     console.log('running shoreline');
     shoreline(512, 512)
       .then(function (ter) {
-          var erodeScript = path.resolve(__dirname, '../lib/worker_scripts/erode.js');
+          var erodeScript = path.resolve(__dirname, '../lib/erosion/erode.js');
           console.log('executing script', erodeScript);
 
           var manager = new Manager(ter);
@@ -15,8 +15,16 @@ if (cluster.isMaster) {
               console.log('updating workers');
               return manager.updateWorkers({
                   script: erodeScript,
-                  reps: 200,
-                  feedback: true
+                  sedDissolve: 0.05,
+                  maxSaturation: 0.5,
+                  waterAmount: 1,
+                  neighborWaterAmount: 0.5,
+                  waterFreq: 1/8,
+                  evapRate: 0.9,
+                  reps: 300,
+                  distance: 1,
+                  feedback: true,
+                  noisy: true
               })
                 .then(function () {
                     console.log('writing terrain');
