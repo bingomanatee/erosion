@@ -23,13 +23,13 @@ shoreline(600, 600)
         .then(function () {
             return worker.updateTerrain({
                 script: erodeScript,
-                sedDissolve: 0.1,
-                maxSaturation: 0.25,
-                waterAmount: 1,
+                sedDissolve: 0.05,
+                maxSaturation: 0.5,
+                waterAmount: 1/5,
                 neighborWaterAmount: 0.5,
                 waterFreq: 1/8,
-                evapRate: 0.9,
-                reps: 300,
+                evapRate: 0.75,
+                reps: 200,
                 distance: 1,
                 noisy: true
             })
