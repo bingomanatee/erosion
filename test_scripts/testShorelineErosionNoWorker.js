@@ -25,11 +25,11 @@ shoreline(400, 400)
                 script: erodeScript,
                 sedDissolve: 0.125,
                 maxSaturation: 0.5,
-                waterAmount: 2,
-                neighborWaterAmount: 1.5,
-                waterFreq: 0.02,
+                waterAmount: 4,
+                neighborWaterAmount: 2.5,
+                waterFreq: 1/30,
                 evapRate: 0.666,
-                reps: 100,
+                reps: 200,
                 distance: 1,
                 noisy: true
             })
