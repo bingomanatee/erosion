@@ -3,15 +3,14 @@ var util = require('util');
 var Worker = new require('./../lib/TerrainWorker');
 var path = require('path');
 var shoreline = require('./../lib/worker_scripts/shorelineTerrain');
+var config = require('./erosionConfig.json');
+var erodeScript = path.resolve(__dirname, '../lib/erosion2/erode.js');
+config.script = erodeScript;
 
-shoreline(600, 600)
+shoreline(300, 300)
   .then(function (ter) {
       var worker = new Worker(ter);
-      var erodeScript = path.resolve(__dirname, '../lib/erosion2/erode.js');
       var smoothScript = path.resolve(__dirname, 'smooth.js');
-
-      console.log('executing script', erodeScript);
-      console.log(ter.dataSummary());
       return worker.updateTerrain({
           script: smoothScript,
           reps: 2,
@@ -21,18 +20,7 @@ shoreline(600, 600)
             return ter.toPng(path.resolve(__dirname, 'shorelinePreEroded.png'))
         })
         .then(function () {
-            return worker.updateTerrain({
-                script: erodeScript,
-                sedDissolve: 0.05,
-                maxSaturation: 0.5,
-                waterAmount: 1/5,
-                neighborWaterAmount: 0.5,
-                waterFreq: 1/8,
-                evapRate: 0.75,
-                reps: 200,
-                distance: 1,
-                noisy: true
-            })
+            return worker.updateTerrain(config)
         }).then(function () {
             console.log('writing terrain');
             return ter.toPng(path.resolve(__dirname, 'shorelineEroded.png'))

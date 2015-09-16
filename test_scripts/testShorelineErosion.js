@@ -1,47 +1,48 @@
 var cluster = require('cluster');
 var util = require('util');
+var config = require('./erosionConfig.json');
+var path = require('path');
+var erodeScript = path.resolve(__dirname, '../lib/erosion2/erode.js');
+config.script = erodeScript;
+
 if (cluster.isMaster) {
     var Manager = require('./../lib/TerrainManager');
     var path = require('path');
     var shoreline = require('./../lib/worker_scripts/shorelineTerrain');
     console.log('running shoreline');
-    shoreline(512, 512)
-      .then(function (ter) {
-          var erodeScript = path.resolve(__dirname, '../lib/erosion/erode.js');
-          console.log('executing script', erodeScript);
+    var ter;
+    var manager;
+    shoreline(config.size, config.size)
+        .then(function(terrain) {
+            ter = terrain;
+            var erodeScript = path.resolve(__dirname, '../lib/erosion/erode.js');
+            console.log('executing script', erodeScript);
 
-          return ter.toPng(path.resolve(__dirname, 'shorelinePreEroded.png'))
-      })
-      .then(function () {
-          var manager = new Manager(ter);
-          return manager.init();
-      }).then(function () {
-          console.log('updating workers');
-          return manager.updateWorkers({
-              script: erodeScript,
-              sedDissolve: 0.05,
-              maxSaturation: 0.5,
-              waterAmount: 1 / 5,
-              neighborWaterAmount: 0.5,
-              waterFreq: 1 / 8,
-              evapRate: 0.75,
-              reps: 200,
-              distance: 1,
-              feedback: true,
-              noisy: true
-          })
-      }, function (err) {
-          console.log('err initalizing', err);
-      }).then(function () {
-          console.log('writing terrain');
-          ter.toPng(path.resolve(__dirname, 'shorelineEroded.png'))
-            .then(function () {
-                manager.closeWorkers();
-            }, function (err) {
-                console.log('error on toPng:', err);
-                manager.closeWorkers();
-            });
-      });
+            return ter.toPng(path.resolve(__dirname, 'shorelinePreEroded.png'))
+        })
+        .then(function() {
+            manager = new Manager(ter);
+            return manager.init();
+        }).then(function() {
+            console.log('updating workers');
+            config.feedback = true;
+            config.askBounds = true;
+            return manager.updateWorkers(config)
+        }, function(err) {
+            console.log('err initalizing', err);
+        }).then(function() {
+            console.log('writing terrain');
+            ter.toPng(path.resolve(__dirname, 'shorelineEroded.png'))
+                .then(function() {
+                    manager.closeWorkers();
+                }, function(err) {
+                    console.log('error on toPng:', err);
+                    manager.closeWorkers();
+                });
+        }, function(err){
+            console.log('error updating workers: ');
+            console.log(util.inspect(err).substr(0, 500));
+        });
 
 } else {
     var Worker = new require('./../lib/TerrainWorker');
