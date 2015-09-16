@@ -4,7 +4,7 @@ var Worker = new require('./../lib/TerrainWorker');
 var path = require('path');
 var shoreline = require('./../lib/worker_scripts/shorelineTerrain');
 
-shoreline(200, 200)
+shoreline(400, 400)
   .then(function (ter) {
       var worker = new Worker(ter);
       var erodeScript = path.resolve(__dirname, '../lib/erosion2/erode.js');
@@ -25,12 +25,12 @@ shoreline(200, 200)
                 script: erodeScript,
                 sedDissolve: 0.125,
                 maxSaturation: 0.5,
-                waterAmount: 1,
-                neighborWaterAmount: 0.25,
-                waterFreq: 0.05,
-                evapRate: 0.75,
-                reps: 300,
-                distance: 10,
+                waterAmount: 2,
+                neighborWaterAmount: 1.5,
+                waterFreq: 0.02,
+                evapRate: 0.666,
+                reps: 100,
+                distance: 1,
                 noisy: true
             })
         }).then(function () {
