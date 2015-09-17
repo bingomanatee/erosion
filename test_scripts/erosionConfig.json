@@ -2,7 +2,7 @@
   "size": 600,
   "sedDissolve": 0.25,
   "maxSaturation": 0.5,
-  "waterAmount": 0.15,
+  "waterAmount": 0.25,
   "neighborWaterAmount": 0.075,
   "waterFreq": 0.2,
   "evapRate": 0.9,
