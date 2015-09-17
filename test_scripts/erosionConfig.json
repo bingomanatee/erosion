@@ -1,12 +1,12 @@
 {
-  "size": 400,
+  "size": 600,
   "sedDissolve": 0.5,
   "maxSaturation": 0.5,
-  "waterAmount": 0.1,
+  "waterAmount": 0.15,
   "neighborWaterAmount": 0.075,
   "waterFreq": 0.2,
   "evapRate": 0.5,
   "reps": 200,
-  "distance": 0.5,
+  "distance": 0.75,
   "noisy": 25
 }
