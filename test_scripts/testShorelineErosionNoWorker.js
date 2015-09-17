@@ -4,7 +4,7 @@ var Worker = new require('./../lib/TerrainWorker');
 var path = require('path');
 var shoreline = require('./../lib/worker_scripts/shorelineTerrain');
 var config = require('./erosionConfig.json');
-var erodeScript = path.resolve(__dirname, '../lib/erosion2/erode.js');
+var erodeScript = path.resolve(__dirname, '../lib/erosion/erode.js');
 config.script = erodeScript;
 
 shoreline(300, 300)

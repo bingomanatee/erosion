@@ -2,7 +2,7 @@ var cluster = require('cluster');
 var util = require('util');
 var config = require('./erosionConfig.json');
 var path = require('path');
-var erodeScript = path.resolve(__dirname, '../lib/erosion2/erode.js');
+var erodeScript = path.resolve(__dirname, '../lib/erosion/erode.js');
 var shoreline = require('./../lib/worker_scripts/shorelineTerrain');
 var Manager = require('./../lib/TerrainManager');
 config.script = erodeScript;
@@ -14,8 +14,6 @@ if (cluster.isMaster) {
     shoreline(config.size, config.size)
         .then(function(terrain) {
             ter = terrain;
-            console.log('executing script', erodeScript);
-
             return ter.toPng(path.resolve(__dirname, 'shorelinePreEroded.png'))
         })
         .then(function() {
@@ -23,8 +21,8 @@ if (cluster.isMaster) {
             return manager.init();
         }).then(function() {
             console.log('updating workers');
-            config.feedback = true;
             config.askBounds = true;
+            config.feedback = true;
             return manager.updateWorkers(config)
         }, function(err) {
             console.log('err initalizing', err);

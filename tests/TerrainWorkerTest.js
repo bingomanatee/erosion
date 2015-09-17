@@ -16,13 +16,15 @@ describe('TerrainWorker', function () {
             boundsBuffer.writeInt16LE(6);
             boundsBuffer.writeInt16LE(9);
             boundsBuffer.writeFloatLE(55.5);
+            boundsBuffer.writeFloatLE(10);
+            boundsBuffer.writeFloatLE(2);
             decode = TerrainWorker.decodeBounds(boundsBuffer.toBuffer());
         });
 
         it('should decode buffer', function () {
             expect(decode.map(function (cell) {
-                return _.pick(cell, 'i,j,value'.split(','))
-            })).to.eql([{i: 6, j: 9, value: 55.5}]);
+                return _.pick(cell, 'i,j,value,water,sed'.split(','))
+            })).to.eql([{i: 6, j: 9, value: 55.5, water: 10, sed: 2}]);
         });
 
     });

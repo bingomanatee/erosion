@@ -12,45 +12,6 @@ describe('erosion', function() {
 
         var cell;
 
-        describe('dissolve', function() {
-            var dissolve = require('./../lib/erosion/cell/dissolve');
-            var dissolveRate = 0.25;
-
-            beforeEach(function() {
-                cell = new TerrainCell({}, 0, 0, 5);
-            });
-
-            it('doesn\'t dissolve the terrain if there is no water', function() {
-                dissolve(cell, dissolveRate);
-                expect(cell.height()).to.eql(5);
-                expect(cell.totalHeight(true)).to.eql(5);
-            });
-
-            it('doesn\'t change the total height', function() {
-                dissolve(cell, dissolveRate);
-                expect(cell.totalHeight(true)).to.eql(5);
-            });
-
-            describe('with water', function() {
-                beforeEach(function() {
-                    cell.water = 10;
-                    dissolve(cell, dissolveRate);
-                });
-
-                it('produces net 2.5 sediment', function() {
-                    expect(cell.totalSed(true)).to.eql(2.5);
-                });
-
-                it('dissolves the cell by a given percent of the present water', function() {
-                    expect(cell.height()).to.eql(2.5);
-                });
-
-                it('doesn\'t change the total height', function() {
-                    expect(cell.totalHeight(true)).to.eql(15);
-                });
-            });
-        });
-
         describe('evaporate', function() {
             var evaporate = require('./../lib/erosion/cell/evaporate');
             var cell;
@@ -130,10 +91,10 @@ describe('erosion', function() {
                 cell = terrain.getCell(2, 2);
                 cell.water = 5;
                 cell.sed = 2;
-                flowToNeighbors(cell);
+                flowToNeighbors(cell, 0.25, 10);
             });
 
-            it.only('should flow into downstream neighbors', function(){
+            it('should flow into downstream neighbors', function(){
                 terrain.erosionReport();
             })
         });
@@ -231,9 +192,8 @@ describe('erosion', function() {
             terrain.getCell(5, 5).water = 100;
             worker.updateTerrain(runParams)
                 .then(function() {
-                    terrain.erosionReport();
+                 //   terrain.erosionReport();
                     var imgPath = path.resolve(__dirname, '../test_scripts/singleChannel.png');
-                    console.log('image path: ', imgPath);
                     terrain.toPng(imgPath, {max: 50, min: -20})
                         .then(function() {
                             done();
