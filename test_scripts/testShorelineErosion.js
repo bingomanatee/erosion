@@ -3,19 +3,17 @@ var util = require('util');
 var config = require('./erosionConfig.json');
 var path = require('path');
 var erodeScript = path.resolve(__dirname, '../lib/erosion2/erode.js');
+var shoreline = require('./../lib/worker_scripts/shorelineTerrain');
+var Manager = require('./../lib/TerrainManager');
 config.script = erodeScript;
 
 if (cluster.isMaster) {
-    var Manager = require('./../lib/TerrainManager');
-    var path = require('path');
-    var shoreline = require('./../lib/worker_scripts/shorelineTerrain');
     console.log('running shoreline');
     var ter;
     var manager;
     shoreline(config.size, config.size)
         .then(function(terrain) {
             ter = terrain;
-            var erodeScript = path.resolve(__dirname, '../lib/erosion/erode.js');
             console.log('executing script', erodeScript);
 
             return ter.toPng(path.resolve(__dirname, 'shorelinePreEroded.png'))
