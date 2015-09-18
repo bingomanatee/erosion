@@ -168,29 +168,29 @@ describe('Terrain', function () {
                 // console.log('terrain 0');
                 // console.log(terrains[0].to2Darray());
                 expect(terrains[0].to2Darray()).to.eql([
-                      [1, 2, 3, 4, 5],
-                      [11, 12, 13, 14, 15],
-                      [21, 22, 23, 24, 25],
-                      [31, 32, 33, 34, 35],
-                      [41, 42, 43, 44, 45],
-                      [51, 52, 53, 54, 55],
-                      [61, 62, 63, 64, 65],
-                      [71, 72, 73, 74, 75]
-                  ]
+                        [1, 2, 3, 4, 5],
+                        [11, 12, 13, 14, 15],
+                        [21, 22, 23, 24, 25],
+                        [31, 32, 33, 34, 35],
+                        [41, 42, 43, 44, 45],
+                        [51, 52, 53, 54, 55],
+                        [61, 62, 63, 64, 65],
+                        [71, 72, 73, 74, 75]
+                    ]
                 );
 
                 //   console.log('terrain 1');
                 //   console.log(terrains[1].to2Darray());
                 expect(terrains[1].to2Darray()).to.eql([
-                      [6, 7, 8, 9, 10],
-                      [16, 17, 18, 19, 20],
-                      [26, 27, 28, 29, 30],
-                      [36, 37, 38, 39, 40],
-                      [46, 47, 48, 49, 50],
-                      [56, 57, 58, 59, 60],
-                      [66, 67, 68, 69, 70],
-                      [76, 77, 78, 79, 80]
-                  ]
+                        [6, 7, 8, 9, 10],
+                        [16, 17, 18, 19, 20],
+                        [26, 27, 28, 29, 30],
+                        [36, 37, 38, 39, 40],
+                        [46, 47, 48, 49, 50],
+                        [56, 57, 58, 59, 60],
+                        [66, 67, 68, 69, 70],
+                        [76, 77, 78, 79, 80]
+                    ]
                 );
             });
         });
@@ -223,12 +223,12 @@ describe('Terrain', function () {
                 //   console.log('terrain 1');
                 //   console.log(terrains[1].to2Darray());
                 expect(terrains[1].to2Darray()).to.eql(
-                  [
-                      [17, 18, 19, 20],
-                      [21, 22, 23, 24],
-                      [25, 26, 27, 28],
-                      [29, 30, 31, 32]
-                  ]);
+                    [
+                        [17, 18, 19, 20],
+                        [21, 22, 23, 24],
+                        [25, 26, 27, 28],
+                        [29, 30, 31, 32]
+                    ]);
             });
         });
 
@@ -258,11 +258,45 @@ describe('Terrain', function () {
                 return ++n;
             });
 
-            terrain2 = Terrain.fromData(terrain.toData());
         });
 
-        it('should copy data perfectly', function () {
-            expect(terrain2.to2Darray()).to.eql(terrain.to2Darray());
+        describe('simple height copy', function () {
+            beforeEach(function () {
+                var data = terrain.toData();
+                terrain2 = Terrain.fromData(data);
+            });
+
+            it('should copy data perfectly', function () {
+                var tArray = terrain.to2Darray();
+                var t2Array = terrain2.to2Darray();
+                expect(tArray).to.eql(t2Array);
+            });
+        });
+
+        describe('simple height copy', function () {
+            beforeEach(function () {
+                terrain.each(function (cell) {
+                    cell.sed = cell.i;
+                    cell.water = cell.j;
+                });
+                terrain2 = Terrain.fromData(terrain.toData(true), true);
+            });
+
+            it('should copy data perfectly', function () {
+                expect(terrain2.to2Darray()).to.eql(terrain.to2Darray());
+            });
+
+            it('should copy sediment', function () {
+                terrain2.each(function (cell) {
+                    expect(cell.sed).to.eql(cell.i);
+                });
+            });
+
+            it('should copy water', function () {
+                terrain2.each(function (cell) {
+                    expect(cell.water).to.eql(cell.j);
+                });
+            });
         });
 
     });
@@ -313,16 +347,16 @@ describe('Terrain', function () {
                     return {i: n.i, j: n.j, height: n.height()};
                 });
                 expect(data).to.eql(
-                  [
-                      {i: -1, j: -1, height: 100},
-                      {i: -1, j: 0, height: 150},
-                      {i: -1, j: 1, height: 200},
-                      {i: 0, j: -1, height: 250},
-                      {i: 0, j: 1, height: 2},
-                      {i: 1, j: -1, height: 300},
-                      {i: 1, j: 0, height: 5},
-                      {i: 1, j: 1, height: 6}
-                  ]
+                    [
+                        {i: -1, j: -1, height: 100},
+                        {i: -1, j: 0, height: 150},
+                        {i: -1, j: 1, height: 200},
+                        {i: 0, j: -1, height: 250},
+                        {i: 0, j: 1, height: 2},
+                        {i: 1, j: -1, height: 300},
+                        {i: 1, j: 0, height: 5},
+                        {i: 1, j: 1, height: 6}
+                    ]
                 );
             })
         });
@@ -352,16 +386,16 @@ describe('Terrain', function () {
         });
     });
 
-    describe('#toPNG', function(){
+    describe('#toPNG', function () {
 
-        beforeEach(function(){
-            terrain = new Terrain(40, 40, function(i, j){
+        beforeEach(function () {
+            terrain = new Terrain(40, 40, function (i, j) {
                 return (i * j);
             });
         });
 
-        it('should write a PNG', function(done){
-            terrain.toPng(path.resolve(__dirname, '../test_scripts/pngOut.png'), {min: 0, max: (40 * 40/2)}, done);
+        it('should write a PNG', function (done) {
+            terrain.toPng(path.resolve(__dirname, '../test_scripts/pngOut.png'), {min: 0, max: (40 * 40 / 2)}, done);
         });
     })
 });

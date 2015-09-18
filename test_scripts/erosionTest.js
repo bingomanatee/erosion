@@ -2,6 +2,7 @@ var cluster = require('cluster');
 var util = require('util');
 var path = require('path');
 var Manager = require('./../lib/TerrainManager');
+var Terrain = require('./../lib/Terrain');
 
 var erodeScript = path.resolve(__dirname, '../lib/erosion/erode.js');
 var config = require('./erosionTestConfig.json');
