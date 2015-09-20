@@ -12,24 +12,38 @@ config.reps = 1;
 
 if (cluster.isMaster) {
     console.log('running shoreline');
-    var ter = new Terrain(20, 10, function (i, j) {
-        return (i + j) * 5;
+    var ter = new Terrain(16, 8, function (i, j) {
+        return Math.max(i, j) * 5;
     });
     var manager;
 
     manager = new Manager(ter);
     manager.init()
+        .then(function(){
+            return manager.initBounds();
+        })
         .then(function () {
             console.log('updating workers');
             return manager.updateWorkers(config)
         }, function (err) {
             console.log('err initializing', err);
-        }).then(function () {
-            console.log('polling terrain');
-            return manager.fullUpdate();
-        }).then(function(){
-            terr.erosionReport(100);
             manager.closeWorkers();
+        }).then(function () {
+            console.log('get feedback');
+            return manager.getFeedback(true);
+        }, function(err){
+            console.log('updateWorkers error:', err);
+            manager.closeWorkers();
+        }).then(function () {
+            ter.erosionReport(100);
+            return ter.toMultiPng(__dirname + '/erosionTest.png', 8, 3);
+        }, function (err) {
+            console.log('getFeedback error: ', err);
+        }).then(function () {
+            console.log('done with' ,ter.toString());
+            manager.closeWorkers();
+        }, function (err) {
+            console.log('draw error: ', err);
         });
 
 } else {

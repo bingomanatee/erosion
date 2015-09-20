@@ -8,5 +8,6 @@
   "evapRate": 0.5,
   "reps": 1,
   "distance": 20,
-  "noisy": 1
+  "noisy": 1,
+  "noScale": true
 }
