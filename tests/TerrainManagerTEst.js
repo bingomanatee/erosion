@@ -33,7 +33,7 @@ describe('TerrainManager', function () {
 
         beforeEach(function () {
             input = mgr.divisions[1].toJSON();
-            bounds = mgr.boundsFor(input);
+            bounds = mgr.getBounds(input);
             decoded = TerrainWorker.decodeBounds(bounds);
 
           //  console.log('bounds: ', bounds, 'decoded: ', decoded);

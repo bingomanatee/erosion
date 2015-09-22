@@ -42,7 +42,7 @@ module.exports = function (worker, data) {
 
     return new Promise(function(resolve, reject){
         if ((!worker.terrain._bounds) && (!noBounds)) {
-            worker.askBounds().then(function () {
+            worker.initBounds().then(function () {
                 _smooth(worker);
                 resolve(true);
             },reject);

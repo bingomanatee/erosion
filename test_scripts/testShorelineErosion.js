@@ -21,7 +21,7 @@ if (cluster.isMaster) {
             return manager.init();
         }).then(function() {
             console.log('updating workers');
-            config.askBounds = true;
+            config.initBounds = true;
             config.feedback = true;
             return manager.updateWorkers(config)
         }, function(err) {
